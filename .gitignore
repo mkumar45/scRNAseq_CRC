@@ -1,0 +1,10 @@
+# Files to ignore from local repository
+
+# Ignore raw data files that are too large (>100MB)
+# Only commit compressed version of the data
+data/raw/*
+# python compiled code
+*.pyc
+src/__pycache__/
+# Any R history
+src/.Rhistory
