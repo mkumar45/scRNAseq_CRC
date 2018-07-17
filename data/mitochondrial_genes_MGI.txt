@@ -1,0 +1,294 @@
+Chromosome	Start	End	cM	strand GRCm38	MGI ID	Feature Type	Symbol	Name		
+MT					MGI:108421	unclassified other genome feature	mt-Lsp	mitochondrial light-strand promoter	
+MT					MGI:108422	unclassified other genome feature	mt-Dcr	mitochondrial d-loop control region	
+MT	7766	7969		+	MGI:99926	protein coding gene	mt-Atp8	mitochondrially encoded ATP synthase 8	
+MT	7927	8607		+	MGI:99927	protein coding gene	mt-Atp6	mitochondrially encoded ATP synthase 6	
+MT	2751	3707		+	MGI:101787	protein coding gene	mt-Nd1	mitochondrially encoded NADH dehydrogenase 1	
+MT	5260	5326		-	MGI:102470	tRNA gene	mt-Ty	mitochondrially encoded tRNA tyrosine	
+MT	4950	5016		+	MGI:102471	tRNA gene	mt-Tw	mitochondrially encoded tRNA tryptophan	
+MT	1025	1093		+	MGI:102472	tRNA gene	mt-Tv	mitochondrially encoded tRNA valine	
+MT	15289	15355		+	MGI:102473	tRNA gene	mt-Tt	mitochondrially encoded tRNA threonine	
+MT	11613	11671		+	MGI:102474	tRNA gene	mt-Ts2	mitochondrially encoded tRNA serine 2	
+MT	6870	6938		-	MGI:102475	tRNA gene	mt-Ts1	mitochondrially encoded tRNA serine 1	
+MT	9808	9875		+	MGI:102476	tRNA gene	mt-Tr	mitochondrially encoded tRNA arginine	
+MT	3772	3842		-	MGI:102477	tRNA gene	mt-Tq	mitochondrially encoded tRNA glutamine	
+MT	15356	15422		-	MGI:102478	tRNA gene	mt-Tp	mitochondrially encoded tRNA proline	
+MT	5089	5159		-	MGI:102479	tRNA gene	mt-Tn	mitochondrially encoded tRNA asparagine	
+MT	3845	3913		+	MGI:102480	tRNA gene	mt-Tm	mitochondrially encoded tRNA methionine	
+MT	11671	11741		+	MGI:102481	tRNA gene	mt-Tl2	mitochondrially encoded tRNA leucine 2	
+MT	2676	2750		+	MGI:102482	tRNA gene	mt-Tl1	mitochondrially encoded tRNA leucine 1	
+MT	7700	7764		+	MGI:102483	tRNA gene	mt-Tk	mitochondrially encoded tRNA lysine	
+MT	3706	3774		+	MGI:102484	tRNA gene	mt-Ti	mitochondrially encoded tRNA isoleucine	
+MT	11546	11612		+	MGI:102485	tRNA gene	mt-Th	mitochondrially encoded tRNA histidine	
+MT	9391	9458		+	MGI:102486	tRNA gene	mt-Tg	mitochondrially encoded tRNA glycine	
+MT	1	68		+	MGI:102487	tRNA gene	mt-Tf	mitochondrially encoded tRNA phenylalanine	
+MT	14071	14139		-	MGI:102488	tRNA gene	mt-Te	mitochondrially encoded tRNA glutamic acid	
+MT	6942	7011		+	MGI:102489	tRNA gene	mt-Td	mitochondrially encoded tRNA aspartic acid	
+MT	5192	5257		-	MGI:102490	tRNA gene	mt-Tc	mitochondrially encoded tRNA cysteine	
+MT	5018	5086		-	MGI:102491	tRNA gene	mt-Ta	mitochondrially encoded tRNA alanine	
+MT	1094	2675		+	MGI:102492	rRNA gene	mt-Rnr2	mitochondrially encoded 16S rRNA	
+MT	70	1024		+	MGI:102493	rRNA gene	mt-Rnr1	mitochondrially encoded 12S rRNA	
+MT					MGI:102494	unclassified other genome feature	mt-Olr	mitochondrial light strand origin of replication	
+MT	13552	14070		-	MGI:102495	protein coding gene	mt-Nd6	mitochondrially encoded NADH dehydrogenase 6	
+MT	11742	13565		+	MGI:102496	protein coding gene	mt-Nd5	mitochondrially encoded NADH dehydrogenase 5	
+MT	9877	10173		+	MGI:102497	protein coding gene	mt-Nd4l	mitochondrially encoded NADH dehydrogenase 4L	
+MT	10167	11544		+	MGI:102498	protein coding gene	mt-Nd4	mitochondrially encoded NADH dehydrogenase 4	
+MT	9459	9806		+	MGI:102499	protein coding gene	mt-Nd3	mitochondrially encoded NADH dehydrogenase 3	
+MT	3914	4951		+	MGI:102500	protein coding gene	mt-Nd2	mitochondrially encoded NADH dehydrogenase 2	
+MT	14145	15288		+	MGI:102501	protein coding gene	mt-Cytb	mitochondrially encoded cytochrome b	
+MT	8607	9390		+	MGI:102502	protein coding gene	mt-Co3	mitochondrially encoded cytochrome c oxidase III	
+MT	7013	7696		+	MGI:102503	protein coding gene	mt-Co2	mitochondrially encoded cytochrome c oxidase II	
+MT	5328	6872		+	MGI:102504	protein coding gene	mt-Co1	mitochondrially encoded cytochrome c oxidase I	
+MT					MGI:102505	unclassified other genome feature	mt-Att	mitochondrial membrane attachment site	
+MT					MGI:3776661	chromosomal deletion	Del(MTmt-Tk-mt-Nd5)1Jiha	deletion, MT, Jun-Ichi Hayashi 1	
+MT	12453	12465		+	MGI:5933344	TSS region	Tssr5577	transcription start site region 5577	
+MT	12509	12520		-	MGI:5933345	TSS region	Tssr5578	transcription start site region 5578	
+MT	14048	14053		-	MGI:5933346	TSS region	Tssr5579	transcription start site region 5579	
+MT	14407	14424		-	MGI:5933347	TSS region	Tssr5580	transcription start site region 5580	
+MT	66	79		+	MGI:6087873	TSS region	Tssr160106	transcription start site region 160106	
+MT	487	498		+	MGI:6087874	TSS region	Tssr160107	transcription start site region 160107	
+MT	592	603		+	MGI:6087875	TSS region	Tssr160108	transcription start site region 160108	
+MT	1087	1106		+	MGI:6087876	TSS region	Tssr160109	transcription start site region 160109	
+MT	2132	2143		+	MGI:6087877	TSS region	Tssr160110	transcription start site region 160110	
+MT	2151	2162		+	MGI:6087878	TSS region	Tssr160111	transcription start site region 160111	
+MT	2166	2178		+	MGI:6087879	TSS region	Tssr160112	transcription start site region 160112	
+MT	2200	2211		+	MGI:6087880	TSS region	Tssr160113	transcription start site region 160113	
+MT	2250	2259		+	MGI:6087881	TSS region	Tssr160114	transcription start site region 160114	
+MT	2280	2291		+	MGI:6087882	TSS region	Tssr160115	transcription start site region 160115	
+MT	2322	2333		+	MGI:6087883	TSS region	Tssr160116	transcription start site region 160116	
+MT	2345	2356		+	MGI:6087884	TSS region	Tssr160117	transcription start site region 160117	
+MT	2369	2380		+	MGI:6087885	TSS region	Tssr160118	transcription start site region 160118	
+MT	2391	2402		+	MGI:6087886	TSS region	Tssr160119	transcription start site region 160119	
+MT	2419	2428		+	MGI:6087887	TSS region	Tssr160120	transcription start site region 160120	
+MT	2743	2761		+	MGI:6087888	TSS region	Tssr160121	transcription start site region 160121	
+MT	2853	2864		+	MGI:6087889	TSS region	Tssr160122	transcription start site region 160122	
+MT	3048	3059		+	MGI:6087890	TSS region	Tssr160123	transcription start site region 160123	
+MT	3064	3075		+	MGI:6087891	TSS region	Tssr160124	transcription start site region 160124	
+MT	3113	3122		+	MGI:6087892	TSS region	Tssr160125	transcription start site region 160125	
+MT	3171	3182		+	MGI:6087893	TSS region	Tssr160126	transcription start site region 160126	
+MT	3375	3390		+	MGI:6087894	TSS region	Tssr160127	transcription start site region 160127	
+MT	3434	3445		+	MGI:6087895	TSS region	Tssr160128	transcription start site region 160128	
+MT	3906	3926		+	MGI:6087896	TSS region	Tssr160129	transcription start site region 160129	
+MT	4005	4014		+	MGI:6087897	TSS region	Tssr160130	transcription start site region 160130	
+MT	4228	4239		+	MGI:6087898	TSS region	Tssr160131	transcription start site region 160131	
+MT	4286	4297		+	MGI:6087899	TSS region	Tssr160132	transcription start site region 160132	
+MT	4404	4426		+	MGI:6087900	TSS region	Tssr160133	transcription start site region 160133	
+MT	4666	4678		+	MGI:6087901	TSS region	Tssr160134	transcription start site region 160134	
+MT	4750	4765		+	MGI:6087902	TSS region	Tssr160135	transcription start site region 160135	
+MT	4870	4907		+	MGI:6087903	TSS region	Tssr160136	transcription start site region 160136	
+MT	5015	5020		+	MGI:6087904	TSS region	Tssr160137	transcription start site region 160137	
+MT	5319	5333		+	MGI:6087905	TSS region	Tssr160138	transcription start site region 160138	
+MT	5358	5386		+	MGI:6087906	TSS region	Tssr160139	transcription start site region 160139	
+MT	5400	5413		+	MGI:6087907	TSS region	Tssr160140	transcription start site region 160140	
+MT	5722	5731		+	MGI:6087908	TSS region	Tssr160141	transcription start site region 160141	
+MT	5756	5799		+	MGI:6087909	TSS region	Tssr160142	transcription start site region 160142	
+MT	5803	5815		+	MGI:6087910	TSS region	Tssr160143	transcription start site region 160143	
+MT	5817	5829		+	MGI:6087911	TSS region	Tssr160144	transcription start site region 160144	
+MT	5835	5848		+	MGI:6087912	TSS region	Tssr160145	transcription start site region 160145	
+MT	5893	5902		+	MGI:6087913	TSS region	Tssr160146	transcription start site region 160146	
+MT	5995	6020		+	MGI:6087914	TSS region	Tssr160147	transcription start site region 160147	
+MT	6037	6048		+	MGI:6087915	TSS region	Tssr160148	transcription start site region 160148	
+MT	6145	6167		+	MGI:6087916	TSS region	Tssr160149	transcription start site region 160149	
+MT	6180	6197		+	MGI:6087917	TSS region	Tssr160150	transcription start site region 160150	
+MT	6200	6223		+	MGI:6087918	TSS region	Tssr160151	transcription start site region 160151	
+MT	6239	6248		+	MGI:6087919	TSS region	Tssr160152	transcription start site region 160152	
+MT	6308	6321		+	MGI:6087920	TSS region	Tssr160153	transcription start site region 160153	
+MT	6343	6355		+	MGI:6087921	TSS region	Tssr160154	transcription start site region 160154	
+MT	6362	6378		+	MGI:6087922	TSS region	Tssr160155	transcription start site region 160155	
+MT	7005	7022		+	MGI:6087923	TSS region	Tssr160156	transcription start site region 160156	
+MT	7024	7052		+	MGI:6087924	TSS region	Tssr160157	transcription start site region 160157	
+MT	7759	7794		+	MGI:6087925	TSS region	Tssr160158	transcription start site region 160158	
+MT	8600	8616		+	MGI:6087926	TSS region	Tssr160159	transcription start site region 160159	
+MT	8618	8619		+	MGI:6087927	TSS region	Tssr160160	transcription start site region 160160	
+MT	8942	8953		+	MGI:6087928	TSS region	Tssr160161	transcription start site region 160161	
+MT	8962	8969		+	MGI:6087929	TSS region	Tssr160162	transcription start site region 160162	
+MT	9452	9468		+	MGI:6087930	TSS region	Tssr160163	transcription start site region 160163	
+MT	9870	9885		+	MGI:6087931	TSS region	Tssr160164	transcription start site region 160164	
+MT	9975	9987		+	MGI:6087932	TSS region	Tssr160165	transcription start site region 160165	
+MT	10092	10103		+	MGI:6087933	TSS region	Tssr160166	transcription start site region 160166	
+MT	10603	10606		+	MGI:6087934	TSS region	Tssr160167	transcription start site region 160167	
+MT	11083	11106		+	MGI:6087935	TSS region	Tssr160168	transcription start site region 160168	
+MT	11108	11119		+	MGI:6087936	TSS region	Tssr160169	transcription start site region 160169	
+MT	11120	11134		+	MGI:6087937	TSS region	Tssr160170	transcription start site region 160170	
+MT	11172	11190		+	MGI:6087938	TSS region	Tssr160171	transcription start site region 160171	
+MT	11194	11230		+	MGI:6087939	TSS region	Tssr160172	transcription start site region 160172	
+MT	11241	11283		+	MGI:6087940	TSS region	Tssr160173	transcription start site region 160173	
+MT	11291	11305		+	MGI:6087941	TSS region	Tssr160174	transcription start site region 160174	
+MT	11323	11336		+	MGI:6087942	TSS region	Tssr160175	transcription start site region 160175	
+MT	11351	11362		+	MGI:6087943	TSS region	Tssr160176	transcription start site region 160176	
+MT	11371	11423		+	MGI:6087944	TSS region	Tssr160177	transcription start site region 160177	
+MT	11425	11457		+	MGI:6087945	TSS region	Tssr160178	transcription start site region 160178	
+MT	11459	11470		+	MGI:6087946	TSS region	Tssr160179	transcription start site region 160179	
+MT	11678	11685		+	MGI:6087947	TSS region	Tssr160180	transcription start site region 160180	
+MT	11734	11757		+	MGI:6087948	TSS region	Tssr160181	transcription start site region 160181	
+MT	12066	12077		+	MGI:6087949	TSS region	Tssr160182	transcription start site region 160182	
+MT	12689	12701		+	MGI:6087950	TSS region	Tssr160183	transcription start site region 160183	
+MT	12952	12974		+	MGI:6087951	TSS region	Tssr160184	transcription start site region 160184	
+MT	12975	13016		+	MGI:6087952	TSS region	Tssr160185	transcription start site region 160185	
+MT	13023	13055		+	MGI:6087953	TSS region	Tssr160186	transcription start site region 160186	
+MT	13130	13141		+	MGI:6087954	TSS region	Tssr160187	transcription start site region 160187	
+MT	13314	13335		+	MGI:6087955	TSS region	Tssr160188	transcription start site region 160188	
+MT	13371	13384		+	MGI:6087956	TSS region	Tssr160189	transcription start site region 160189	
+MT	13423	13435		+	MGI:6087957	TSS region	Tssr160190	transcription start site region 160190	
+MT	13481	13492		+	MGI:6087958	TSS region	Tssr160191	transcription start site region 160191	
+MT	13624	13635		+	MGI:6087959	TSS region	Tssr160192	transcription start site region 160192	
+MT	13639	13659		+	MGI:6087960	TSS region	Tssr160193	transcription start site region 160193	
+MT	13832	13844		+	MGI:6087961	TSS region	Tssr160194	transcription start site region 160194	
+MT	13856	13867		+	MGI:6087962	TSS region	Tssr160195	transcription start site region 160195	
+MT	14117	14129		+	MGI:6087963	TSS region	Tssr160196	transcription start site region 160196	
+MT	14138	14154		+	MGI:6087964	TSS region	Tssr160197	transcription start site region 160197	
+MT	14290	14302		+	MGI:6087965	TSS region	Tssr160198	transcription start site region 160198	
+MT	14546	14557		+	MGI:6087966	TSS region	Tssr160199	transcription start site region 160199	
+MT	14566	14577		+	MGI:6087967	TSS region	Tssr160200	transcription start site region 160200	
+MT	14636	14662		+	MGI:6087968	TSS region	Tssr160201	transcription start site region 160201	
+MT	14667	14678		+	MGI:6087969	TSS region	Tssr160202	transcription start site region 160202	
+MT	14710	14722		+	MGI:6087970	TSS region	Tssr160203	transcription start site region 160203	
+MT	14743	14756		+	MGI:6087971	TSS region	Tssr160204	transcription start site region 160204	
+MT	15351	15364		+	MGI:6087972	TSS region	Tssr160205	transcription start site region 160205	
+MT	15394	15430		+	MGI:6087973	TSS region	Tssr160206	transcription start site region 160206	
+MT	15460	15488		+	MGI:6087974	TSS region	Tssr160207	transcription start site region 160207	
+MT	15520	15532		+	MGI:6087975	TSS region	Tssr160208	transcription start site region 160208	
+MT	15568	15589		+	MGI:6087976	TSS region	Tssr160209	transcription start site region 160209	
+MT	15616	15625		+	MGI:6087977	TSS region	Tssr160210	transcription start site region 160210	
+MT	16007	16061		+	MGI:6087978	TSS region	Tssr160211	transcription start site region 160211	
+MT	16070	16093		+	MGI:6087979	TSS region	Tssr160212	transcription start site region 160212	
+MT	16098	16107		+	MGI:6087980	TSS region	Tssr160213	transcription start site region 160213	
+MT	16129	16146		+	MGI:6087981	TSS region	Tssr160214	transcription start site region 160214	
+MT	16222	16242		+	MGI:6087982	TSS region	Tssr160215	transcription start site region 160215	
+MT	250	313		-	MGI:6087983	TSS region	Tssr160216	transcription start site region 160216	
+MT	356	367		-	MGI:6087984	TSS region	Tssr160217	transcription start site region 160217	
+MT	380	394		-	MGI:6087985	TSS region	Tssr160218	transcription start site region 160218	
+MT	405	410		-	MGI:6087986	TSS region	Tssr160219	transcription start site region 160219	
+MT	418	446		-	MGI:6087987	TSS region	Tssr160220	transcription start site region 160220	
+MT	455	485		-	MGI:6087988	TSS region	Tssr160221	transcription start site region 160221	
+MT	530	533		-	MGI:6087989	TSS region	Tssr160222	transcription start site region 160222	
+MT	570	581		-	MGI:6087990	TSS region	Tssr160223	transcription start site region 160223	
+MT	630	641		-	MGI:6087991	TSS region	Tssr160224	transcription start site region 160224	
+MT	679	688		-	MGI:6087992	TSS region	Tssr160225	transcription start site region 160225	
+MT	732	741		-	MGI:6087993	TSS region	Tssr160226	transcription start site region 160226	
+MT	747	752		-	MGI:6087994	TSS region	Tssr160227	transcription start site region 160227	
+MT	761	788		-	MGI:6087995	TSS region	Tssr160228	transcription start site region 160228	
+MT	835	846		-	MGI:6087996	TSS region	Tssr160229	transcription start site region 160229	
+MT	847	854		-	MGI:6087997	TSS region	Tssr160230	transcription start site region 160230	
+MT	872	884		-	MGI:6087998	TSS region	Tssr160231	transcription start site region 160231	
+MT	1221	1243		-	MGI:6087999	TSS region	Tssr160232	transcription start site region 160232	
+MT	1248	1266		-	MGI:6088000	TSS region	Tssr160233	transcription start site region 160233	
+MT	1288	1299		-	MGI:6088001	TSS region	Tssr160234	transcription start site region 160234	
+MT	1327	1348		-	MGI:6088002	TSS region	Tssr160235	transcription start site region 160235	
+MT	1411	1423		-	MGI:6088003	TSS region	Tssr160236	transcription start site region 160236	
+MT	1448	1455		-	MGI:6088004	TSS region	Tssr160237	transcription start site region 160237	
+MT	1499	1506		-	MGI:6088005	TSS region	Tssr160238	transcription start site region 160238	
+MT	1521	1544		-	MGI:6088006	TSS region	Tssr160239	transcription start site region 160239	
+MT	1588	1619		-	MGI:6088007	TSS region	Tssr160240	transcription start site region 160240	
+MT	1642	1653		-	MGI:6088008	TSS region	Tssr160241	transcription start site region 160241	
+MT	1878	1945		-	MGI:6088009	TSS region	Tssr160242	transcription start site region 160242	
+MT	1965	2009		-	MGI:6088010	TSS region	Tssr160243	transcription start site region 160243	
+MT	2024	2056		-	MGI:6088011	TSS region	Tssr160244	transcription start site region 160244	
+MT	2067	2109		-	MGI:6088012	TSS region	Tssr160245	transcription start site region 160245	
+MT	2167	2182		-	MGI:6088013	TSS region	Tssr160246	transcription start site region 160246	
+MT	2258	2280		-	MGI:6088014	TSS region	Tssr160247	transcription start site region 160247	
+MT	2339	2354		-	MGI:6088015	TSS region	Tssr160248	transcription start site region 160248	
+MT	2360	2389		-	MGI:6088016	TSS region	Tssr160249	transcription start site region 160249	
+MT	2419	2428		-	MGI:6088017	TSS region	Tssr160250	transcription start site region 160250	
+MT	2466	2504		-	MGI:6088018	TSS region	Tssr160251	transcription start site region 160251	
+MT	2844	2855		-	MGI:6088019	TSS region	Tssr160252	transcription start site region 160252	
+MT	3021	3048		-	MGI:6088020	TSS region	Tssr160253	transcription start site region 160253	
+MT	3111	3126		-	MGI:6088021	TSS region	Tssr160254	transcription start site region 160254	
+MT	3153	3165		-	MGI:6088022	TSS region	Tssr160255	transcription start site region 160255	
+MT	3240	3282		-	MGI:6088023	TSS region	Tssr160256	transcription start site region 160256	
+MT	3307	3337		-	MGI:6088024	TSS region	Tssr160257	transcription start site region 160257	
+MT	3381	3391		-	MGI:6088025	TSS region	Tssr160258	transcription start site region 160258	
+MT	3398	3425		-	MGI:6088026	TSS region	Tssr160259	transcription start site region 160259	
+MT	3434	3653		-	MGI:6088027	TSS region	Tssr160260	transcription start site region 160260	
+MT	3662	3685		-	MGI:6088028	TSS region	Tssr160261	transcription start site region 160261	
+MT	3697	3709		-	MGI:6088029	TSS region	Tssr160262	transcription start site region 160262	
+MT	3712	3736		-	MGI:6088030	TSS region	Tssr160263	transcription start site region 160263	
+MT	3755	3776		-	MGI:6088031	TSS region	Tssr160264	transcription start site region 160264	
+MT	3797	3811		-	MGI:6088032	TSS region	Tssr160265	transcription start site region 160265	
+MT	3827	3873		-	MGI:6088033	TSS region	Tssr160266	transcription start site region 160266	
+MT	3883	3895		-	MGI:6088034	TSS region	Tssr160267	transcription start site region 160267	
+MT	4042	4055		-	MGI:6088035	TSS region	Tssr160268	transcription start site region 160268	
+MT	4088	4126		-	MGI:6088036	TSS region	Tssr160269	transcription start site region 160269	
+MT	4227	4244		-	MGI:6088037	TSS region	Tssr160270	transcription start site region 160270	
+MT	4277	4328		-	MGI:6088038	TSS region	Tssr160271	transcription start site region 160271	
+MT	4329	4352		-	MGI:6088039	TSS region	Tssr160272	transcription start site region 160272	
+MT	4356	4385		-	MGI:6088040	TSS region	Tssr160273	transcription start site region 160273	
+MT	4386	4452		-	MGI:6088041	TSS region	Tssr160274	transcription start site region 160274	
+MT	4458	4469		-	MGI:6088042	TSS region	Tssr160275	transcription start site region 160275	
+MT	4549	4565		-	MGI:6088043	TSS region	Tssr160276	transcription start site region 160276	
+MT	4578	4619		-	MGI:6088044	TSS region	Tssr160277	transcription start site region 160277	
+MT	4633	4650		-	MGI:6088045	TSS region	Tssr160278	transcription start site region 160278	
+MT	4653	4681		-	MGI:6088046	TSS region	Tssr160279	transcription start site region 160279	
+MT	4756	4799		-	MGI:6088047	TSS region	Tssr160280	transcription start site region 160280	
+MT	5039	5069		-	MGI:6088048	TSS region	Tssr160281	transcription start site region 160281	
+MT	5795	5827		-	MGI:6088049	TSS region	Tssr160282	transcription start site region 160282	
+MT	5858	5875		-	MGI:6088050	TSS region	Tssr160283	transcription start site region 160283	
+MT	5928	5943		-	MGI:6088051	TSS region	Tssr160284	transcription start site region 160284	
+MT	6181	6190		-	MGI:6088052	TSS region	Tssr160285	transcription start site region 160285	
+MT	6223	6252		-	MGI:6088053	TSS region	Tssr160286	transcription start site region 160286	
+MT	6394	6410		-	MGI:6088054	TSS region	Tssr160287	transcription start site region 160287	
+MT	11143	11229		-	MGI:6088055	TSS region	Tssr160288	transcription start site region 160288	
+MT	11260	11281		-	MGI:6088056	TSS region	Tssr160289	transcription start site region 160289	
+MT	11338	11364		-	MGI:6088057	TSS region	Tssr160290	transcription start site region 160290	
+MT	11411	11545		-	MGI:6088058	TSS region	Tssr160291	transcription start site region 160291	
+MT	11667	11677		-	MGI:6088059	TSS region	Tssr160292	transcription start site region 160292	
+MT	11703	11714		-	MGI:6088060	TSS region	Tssr160293	transcription start site region 160293	
+MT	11745	11761		-	MGI:6088061	TSS region	Tssr160294	transcription start site region 160294	
+MT	11816	11825		-	MGI:6088062	TSS region	Tssr160295	transcription start site region 160295	
+MT	11883	11894		-	MGI:6088063	TSS region	Tssr160296	transcription start site region 160296	
+MT	11924	11936		-	MGI:6088064	TSS region	Tssr160297	transcription start site region 160297	
+MT	11945	11973		-	MGI:6088065	TSS region	Tssr160298	transcription start site region 160298	
+MT	11989	12000		-	MGI:6088066	TSS region	Tssr160299	transcription start site region 160299	
+MT	12012	12033		-	MGI:6088067	TSS region	Tssr160300	transcription start site region 160300	
+MT	12061	12098		-	MGI:6088068	TSS region	Tssr160301	transcription start site region 160301	
+MT	12124	12146		-	MGI:6088069	TSS region	Tssr160302	transcription start site region 160302	
+MT	12150	12168		-	MGI:6088070	TSS region	Tssr160303	transcription start site region 160303	
+MT	12186	12202		-	MGI:6088071	TSS region	Tssr160304	transcription start site region 160304	
+MT	12218	12271		-	MGI:6088072	TSS region	Tssr160305	transcription start site region 160305	
+MT	12356	12383		-	MGI:6088073	TSS region	Tssr160306	transcription start site region 160306	
+MT	12387	12432		-	MGI:6088074	TSS region	Tssr160307	transcription start site region 160307	
+MT	12441	12477		-	MGI:6088075	TSS region	Tssr160308	transcription start site region 160308	
+MT	12657	12678		-	MGI:6088076	TSS region	Tssr160309	transcription start site region 160309	
+MT	12684	12750		-	MGI:6088077	TSS region	Tssr160310	transcription start site region 160310	
+MT	12844	12881		-	MGI:6088078	TSS region	Tssr160311	transcription start site region 160311	
+MT	12904	12928		-	MGI:6088079	TSS region	Tssr160312	transcription start site region 160312	
+MT	13010	13058		-	MGI:6088080	TSS region	Tssr160313	transcription start site region 160313	
+MT	13153	13203		-	MGI:6088081	TSS region	Tssr160314	transcription start site region 160314	
+MT	13281	13334		-	MGI:6088082	TSS region	Tssr160315	transcription start site region 160315	
+MT	13343	13371		-	MGI:6088083	TSS region	Tssr160316	transcription start site region 160316	
+MT	13407	13433		-	MGI:6088084	TSS region	Tssr160317	transcription start site region 160317	
+MT	13445	13452		-	MGI:6088085	TSS region	Tssr160318	transcription start site region 160318	
+MT	13456	13483		-	MGI:6088086	TSS region	Tssr160319	transcription start site region 160319	
+MT	13486	13509		-	MGI:6088087	TSS region	Tssr160320	transcription start site region 160320	
+MT	13523	13536		-	MGI:6088088	TSS region	Tssr160321	transcription start site region 160321	
+MT	13538	13561		-	MGI:6088089	TSS region	Tssr160322	transcription start site region 160322	
+MT	13563	13607		-	MGI:6088090	TSS region	Tssr160323	transcription start site region 160323	
+MT	13683	13710		-	MGI:6088091	TSS region	Tssr160324	transcription start site region 160324	
+MT	13725	13748		-	MGI:6088092	TSS region	Tssr160325	transcription start site region 160325	
+MT	13749	13807		-	MGI:6088093	TSS region	Tssr160326	transcription start site region 160326	
+MT	13814	13833		-	MGI:6088094	TSS region	Tssr160327	transcription start site region 160327	
+MT	13835	13846		-	MGI:6088095	TSS region	Tssr160328	transcription start site region 160328	
+MT	13849	13892		-	MGI:6088096	TSS region	Tssr160329	transcription start site region 160329	
+MT	13930	13967		-	MGI:6088097	TSS region	Tssr160330	transcription start site region 160330	
+MT	13975	13985		-	MGI:6088098	TSS region	Tssr160331	transcription start site region 160331	
+MT	14025	14036		-	MGI:6088099	TSS region	Tssr160332	transcription start site region 160332	
+MT	14060	14074		-	MGI:6088100	TSS region	Tssr160333	transcription start site region 160333	
+MT	14142	14181		-	MGI:6088101	TSS region	Tssr160334	transcription start site region 160334	
+MT	14287	14300		-	MGI:6088102	TSS region	Tssr160335	transcription start site region 160335	
+MT	14532	14543		-	MGI:6088103	TSS region	Tssr160336	transcription start site region 160336	
+MT	14576	14587		-	MGI:6088104	TSS region	Tssr160337	transcription start site region 160337	
+MT	14676	14692		-	MGI:6088105	TSS region	Tssr160338	transcription start site region 160338	
+MT	14769	14783		-	MGI:6088106	TSS region	Tssr160339	transcription start site region 160339	
+MT	14784	14824		-	MGI:6088107	TSS region	Tssr160340	transcription start site region 160340	
+MT	14841	14867		-	MGI:6088108	TSS region	Tssr160341	transcription start site region 160341	
+MT	14871	14887		-	MGI:6088109	TSS region	Tssr160342	transcription start site region 160342	
+MT	14906	14954		-	MGI:6088110	TSS region	Tssr160343	transcription start site region 160343	
+MT	14983	15032		-	MGI:6088111	TSS region	Tssr160344	transcription start site region 160344	
+MT	15037	15053		-	MGI:6088112	TSS region	Tssr160345	transcription start site region 160345	
+MT	15075	15100		-	MGI:6088113	TSS region	Tssr160346	transcription start site region 160346	
+MT	15354	15365		-	MGI:6088114	TSS region	Tssr160347	transcription start site region 160347	
+MT	15368	15379		-	MGI:6088115	TSS region	Tssr160348	transcription start site region 160348	
+MT	15380	15441		-	MGI:6088116	TSS region	Tssr160349	transcription start site region 160349	
+MT	15630	15667		-	MGI:6088117	TSS region	Tssr160350	transcription start site region 160350	
+MT	16053	16095		-	MGI:6088118	TSS region	Tssr160351	transcription start site region 160351	
+MT	16180	16196		-	MGI:6088119	TSS region	Tssr160352	transcription start site region 160352	
