@@ -53,9 +53,12 @@ directories:
 
 ## processed_data : read in csv files and save sparse representation and gene names for each sample. 
 .PHONY : processed_data
-processed_data : $(SPARSE_FILES) $(GENE_NAMES)
+processed_data : $(SPARSE_FILES) $(GENE_NAMES) 
+
+data/processed/ :
+	mkdir $@
  
-data/processed/%_sparse.npz data/processed/%_gene_names.csv : data/raw/%.csv $(PROCESS_SRC)
+data/processed/%_sparse.npz data/processed/%_gene_names.csv : data/raw/%.csv $(PROCESS_SRC) | data/processed/
 	$(PROCESS_EXE) $< data/processed/$*_sparse.npz data/processed/$*_gene_names.csv 
 
 ## data/combined_sparse.npz data/combined_labels.csv : combine all samples into a single sparse representation
