@@ -1,5 +1,5 @@
 require("ggplot2")
-setwd("Z:/users/mkumar/Lau/")
+setwd("Z:/users/mkumar/scRNAseq_CRC/")
 
 tsne_coordinates = read.csv("results/combined_sparse_tsne.csv",header=FALSE)
 colnames(tsne_coordinates) = c("tSNE1","tSNE2")

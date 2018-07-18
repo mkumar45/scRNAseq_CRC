@@ -17,7 +17,6 @@ from scipy import sparse
 def _argparse():
     parser = ArgumentParser('Combine tumor expression data')
     parser.add_argument("processed_directory", help = "directory of processed files to combine",type=str,default="")
-    parser.add_argument("output_file", help = "name of output file for combined sparse matrix",type=str,default="")
     return parser
 
 def main(args):
@@ -54,12 +53,12 @@ def main(args):
         sample_names.append([file_name] * csc_mat.shape[0])
     # Combine sparse matrices
     combined_sparse = sp.sparse.vstack( csc_matrices, format = "coo")
-    sp.sparse.save_npz(argp.output_file,combined_sparse)
+    sp.sparse.save_npz("data/combined/combined_sparse.npz",combined_sparse)
     
-    merged_genes.to_csv("data/combined_gene_names.csv", columns = [], header = False )
+    merged_genes.to_csv("data/combined/combined_gene_names.csv", columns = [], header = False )
     
     sample_labels = [ item for sublist in sample_names for item in sublist]
-    pd.DataFrame( sample_labels ).to_csv("data/combined_labels.csv",header=False,index=False)
+    pd.DataFrame( sample_labels ).to_csv("data/combined/combined_labels.csv",header=False,index=False)
 
 if __name__ == '__main__':
     from sys import argv

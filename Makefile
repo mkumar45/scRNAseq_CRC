@@ -24,10 +24,7 @@ TSNE_EXE=$(LANGUAGE) $(TSNE_SRC)
 CLASSIFY_SRC=code/cell_type_classification.py
 CLASSIFY_EXE=$(LANGUAGE) $(CLASSIFY_SRC)
 
-################################
-### Format all tumor dataset ###
-################################
-
+# Define filenames
 TUMOR_SAMPLES=$(wildcard data/raw/*.csv)
 PROCESSED_FILES=$(patsubst data/raw/%.csv, data/processed/%_sparse.npz, $(TUMOR_SAMPLES))
 SPARSE_FILES=$(patsubst data/raw/%.csv, data/processed/%_sparse.npz, $(TUMOR_SAMPLES))
@@ -40,46 +37,47 @@ variables:
 	@echo SPARSE_FILES: $(SPARSE_FILES)
 	@echo GENE_NAMES: $(GENE_NAMES)
 	
-.PHONY : directories
-directories: 
-	mkdir -p data/processed/
-	mkdir -p results/classification/
-	mkdir -p results/communication/
 
-	
-################################
-### Format all tumor dataset ###
-################################
-
+#	
+# Format all tumor dataset 
+#
 ## processed_data : read in csv files and save sparse representation and gene names for each sample. 
 .PHONY : processed_data
 processed_data : $(SPARSE_FILES) $(GENE_NAMES) 
 
 data/processed/ :
-	mkdir $@
- 
+	mkdir -p $@
+data/combined/ :
+	mkdir -p $@
+data/filtered/ :
+	mkdir -p $@
+	
+## data/processed/%_sparse.npz data/processed/%_gene_names.csv : read individual samples and process into sparse format
 data/processed/%_sparse.npz data/processed/%_gene_names.csv : data/raw/%.csv $(PROCESS_SRC) | data/processed/
 	$(PROCESS_EXE) $< data/processed/$*_sparse.npz data/processed/$*_gene_names.csv 
 
 ## data/combined_sparse.npz data/combined_labels.csv : combine all samples into a single sparse representation
-data/combined_sparse.npz data/combined_labels.csv : processed_data
-	$(LANGUAGE) src/combine_data.py data/processed/ $@
+data/combined/combined_sparse.npz data/combined/combined_labels.csv : src/combine_data.py $(SPARSE_FILES) $(GENE_NAMES) data/combined/
+	$(LANGUAGE) $< data/processed/ $@
 	
+## data/combined_sparse.npz data/combined_labels.csv : combine all samples into a single sparse representation
+data/filtered/filtered_sparse.npz data/filtered/filtered_labels.csv results/qc_info.csv: src/data_qc.py  data/combined/combined_sparse.npz data/mitochondrial_genes_MGI.txt data/filtered/
+	$(LANGUAGE) $< data/combined/combined_sparse.npz data/combined/combined_gene_names.csv data/combined/combined_labels.csv results/combined_sparse_tsne.csv data/mitochondrial_genes_MGI.txt 	
+
+#
+# t-SNE
+#	
 ## results/%_tsne.csv : run tsne using sparse representation as input
 results/%_tsne.csv : data/%.npz src/bhtsne/bh_tsne
 	$(TSNE_EXE) $< $@ -n 1000 
 
 ## src/bhtsne/bh_tsne : compile tsne executable
-src/bhtsne/bh_tsne : src/bhtsne/sptree.cpp tsne.cpp tsne_main.cpp
-	g++ sptree.cpp tsne.cpp tsne_main.cpp -o bh_tsne -O2
+src/bhtsne/bh_tsne : src/bhtsne/sptree.cpp src/bhtsne/tsne.cpp src/bhtsne/tsne_main.cpp
+	g++ src/bhtsne/sptree.cpp src/bhtsne/tsne.cpp src/bhtsne/tsne_main.cpp -o src/bhtsne/bh_tsne -O2
 
-	
-	
-	
-	
-################################
-### Cell type classification ###
-################################
+#
+# Cell type classification ###
+#
 .PHONY : classification
 classification : $(GMM_FILES) $(BIC_FILES)
 results/classification/%_classification : data/tumor_data/%_processed $(CLASSIFY_SRC)

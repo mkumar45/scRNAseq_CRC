@@ -7,4 +7,4 @@ data/raw/*
 *.pyc
 src/__pycache__/
 # Any R history
-src/.Rhistory
+*.Rhistory
