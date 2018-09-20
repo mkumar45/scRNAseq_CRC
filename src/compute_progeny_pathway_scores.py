@@ -1,11 +1,9 @@
 import numpy as np
 import scipy as sp
-from scipy import sparse
+from scipy import sparse, stats
 import pandas as pd
 from argparse import ArgumentParser, FileType
 
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 def compute_pathway_score(scRNA_expression, gene_symbols,  PROGENy_coefficients ):
                         
@@ -16,16 +14,68 @@ def compute_pathway_score(scRNA_expression, gene_symbols,  PROGENy_coefficients 
         gene_symbols = gene_symbols[nan_idx]
         
         # Pathway genes only 
-        idx = [x in PROGENy_coefficients.index.values for x in gene_symbols.index.values]
+        idx = [x in PROGENy_coefficients.index.values for x in gene_symbols]
         expression_subset = normalized_expression[:,idx]
 
         
-        coeff_subset = PROGENy_coefficients.loc[ gene_symbols.index.values[idx] ] # only use coefficients found in expression
-        coeff_subset = coeff_subset.reindex( gene_symbols.index.values[idx] ) # Reorder for multiplication
+        coeff_subset = PROGENy_coefficients.loc[ gene_symbols[idx] ] # only use coefficients found in expression
+        coeff_subset = coeff_subset.reindex( gene_symbols[idx] ) # Reorder for multiplication
 
         pathway_scores = np.matmul( expression_subset, coeff_subset)
         df = pd.DataFrame(pathway_scores,columns=coeff_subset.columns)
         return(df)
+        
+        
+def cell_type_specific_expression( scRNA_expression, gene_symbols, return_genes, cell_type_labels ):
+    """
+    Description
+    -----------
+    Return cell-type specific expression for each gene in list of genes     
+    Parameters
+    ----------       
+    scRNA_expression : sparse matrix
+        expression matrix with rows corresponding to cells and columns to genes
+    gene_symbols : 
+        corresponding gene_symbols for each column of scRNA_expression
+    return_genes :
+        genes to return cell-types expression
+    cell_type_labels:
+        cell-type labels for each row of scRNA_expression matrix
+    Returns
+    -------
+    """
+    
+    
+    cell_types = np.unique( cell_type_labels )
+    num_cell_types = len(cell_types)
+    num_genes = len( return_genes )
+    
+    gene_idx = np.empty((num_genes,1))
+    unique_symbols = np.unique( return_genes )
+    for sym in unique_symbols:
+        
+        gene_idx[ return_genes == sym ] = np.nonzero( gene_symbols.index.values == sym )[0]
+        
+    ct_expression = [[] for n in range(num_cell_types)]
+
+    for ct in range(num_cell_types):
+        ct_idx = cell_type_labels.values == cell_types[ct]
+        
+        ct_expression[ct] = scRNA_expression[ np.squeeze(ct_idx), gene_idx.astype(int)] # cast to int for indexing
+    return(ct_expression)
+        
+        
+def compute_randomized_scores(scRNA_expression, gene_symbols,  PROGENy_coefficients, cell_type_labels):
+    
+    normalized_expression = sp.stats.zscore( scRNA_expression )
+    idx = [x in PROGENy_coefficients.index.values for x in gene_symbols.index.values]
+    expression_subset = normalized_expression[:,idx]
+    
+    cell_type_expression = cell_type_specific_expression( scRNA_expression, gene_symbols, PROGENy_coefficients.index.values,cell_type_labels)
+    
+    
+    np.random.permutation()
+    
         
 def plot_score_heatmap(pathway_scores, cell_type_labels ):
     
@@ -62,13 +112,13 @@ def _argparse():
                         type=str,default="")
     parser.add_argument("gene_names", help = "gene names corresponding to rows of expression matrix",
                         type=str,default="")
-    parser.add_argument("cell_type_labels", help = "directory to save output files",
+    parser.add_argument("cell_type_labels", help = "file containing cell type labels",
                         type=str,default="")
     parser.add_argument("PROGENy",
                         help = "file containing coefficients for PROGENy",
                         type=str,default="")
     parser.add_argument("output_dir", help = "directory to save output files",
-                        type=str,default="")
+                        type=str,default="results/PROGENy/PROGENy_scores.csv")
     parser.add_argument("-g","--group",
                         help = "Number of partitions to use for k-fold cross validation"
                         ,type=str,default=None)
@@ -88,42 +138,29 @@ def main(args):
     parser = _argparse()
     argp = parser.parse_args(args[1:])
     # Read data
-    scRNA_expression = sp.sparse.load_npz( argp.input_file )
-    gene_names = pd.read_csv(argp.gene_names,index_col = 0,header=None)
-    progeny_coeff = pd.read_csv( argp.PROGENy, index_col = 0 )
-    cell_type_labels = pd.read_csv(argp.cell_type_labels,header=None)
-    #scRNA_expression = sp.sparse.load_npz( "data/combined_sparse.npz" )
-    #gene_names = pd.read_csv("data/combined_gene_names.csv",index_col = 0,header=None)
-    #RL_list = import_RL( "data/mouse_receptor_ligand.csv" )
-    #cell_type_labels = pd.read_csv("results/predicted_cell_types.csv",header=None)
+    scRNA_expression = np.array( sp.sparse.load_npz( argp.input_file ).todense() )
+    gene_symbols = np.squeeze( np.array( pd.read_csv(argp.gene_names, header=None)) )
+    #cell_type_labels = pd.read_csv(argp.cell_type_labels,header=None)
+    PROGENy_coefficients = pd.read_csv( argp.PROGENy, index_col = 0 )
     
-    
-    PROGENy_coefficients = pd.read_csv( "data/PROGENy_mouse_model_v2.csv", index_col = 0 )
-    cell_type_labels = pd.read_csv("results/predicted_cell_types.csv",header=None)
-    
-    scRNA_expression = np.array( sp.sparse.load_npz("data/combined_sparse.npz").todense() )
-    gene_symbols = pd.read_csv("data/combined_gene_names.csv" ,index_col = 0,header=None)
+    #scRNA_expression = np.array( sp.sparse.load_npz("data/filtered/filtered_sparse.npz").todense() )
+    #gene_symbols = np.squeeze( np.array( pd.read_csv("data/combined/combined_gene_names.csv", header=None)) )
+    #cell_type_labels = pd.read_csv("results/classification/predicted_cell_types.csv",header=None)
+    PROGENy_coefficients = pd.read_csv( "data/PROGENy_mouse_model_v2.csv", index_col = 0 )  
 
-    sample_labels = pd.read_csv("data/combined_labels.csv",header = None)
-    sample_type = [ x.split("_")[0] for x in sample_labels.iloc[:,0] ]
-    
+    #sample_labels = pd.read_csv("data/combined_labels.csv",header = None)
+    #sample_type = [ x.split("_")[0] for x in sample_labels.iloc[:,0] ]
+    '''
     for sample in np.unique(sample_type):
         print(sample)
         idx = [ typ == sample for typ in sample_type]
         pathway_scores = compute_pathway_score(scRNA_expression[idx,:], gene_symbols, PROGENy_coefficients )
         plot_score_heatmap(pathway_scores, cell_type_labels[idx] )
         pathway_scores.to_csv( "results/"+sample+"_PROGENy_scores.csv")
-
+    '''
     
     pathway_scores = compute_pathway_score(scRNA_expression, gene_symbols, PROGENy_coefficients )
-    pathway_scores.to_csv( "results/PROGENy_scores.csv")
-
-    
-    #idx = [ typ == label for typ in sample_type]   
-    
-    
-    
-    #df.to_csv( "results/PROGENy_scores.csv")
+    pathway_scores.to_csv( argp.output_dir)
     
 if __name__ == '__main__':
     from sys import argv

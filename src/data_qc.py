@@ -5,6 +5,7 @@ from scipy import sparse
 import numpy as np
 from sklearn.decomposition import PCA
 from argparse import ArgumentParser, FileType
+from sklearn.cluster import DBSCAN
 
 
 
@@ -50,17 +51,22 @@ def main(args):
     scRNA_expression = sp.sparse.load_npz( argp.input_file )
     scRNA_dense_expression = np.array(scRNA_expression.todense())
 
-    gene_names = pd.read_csv(argp.gene_names,index_col = 0,header=None)
+    gene_symbols = np.squeeze(np.array(pd.read_csv(argp.gene_names, header=None)))
     mito_genes = pd.read_table(argp.mitochondrial_genes)
-    cell_labels = pd.read_csv(argp.cell_labels,header=None)
-    tsne_coordinates = tsne_coordinates = pd.read_csv(argp.tsne_file,header=None)
+    cell_labels = pd.read_csv(argp.cell_labels,header=None,index_col = 0)
+    sequencing_metrics -= pd.read_csv( argp.metric_file, index_col = 0)
+    
+    
+    
+    
+    tsne_coordinates = np.array(pd.read_csv(argp.tsne_file,header=None)
 
 
     # Find all mitochondrial genes in expression data
-    converted_symbols = [ x.replace(".","-") for x in gene_names.index.values if "." in x]
+    converted_symbols = [ x.replace(".","-") for x in gene_symbols.index.values if "." in x]
     mt_gene_names = [ gene for gene in mito_genes.Symbol if gene in converted_symbols ]
     mt_gene_names = [ x.replace("-",".") for x in mt_gene_names ]
-    mt_gene_idx = [ gene in mt_gene_names for gene in gene_names.index.values]
+    mt_gene_idx = [ gene in mt_gene_names for gene in gene_symbols.index.values]
     mito_expression = np.array(scRNA_expression.todense()[:,mt_gene_idx])
 
     # Use only genes where greater than 10% of cells express the gene
@@ -71,10 +77,16 @@ def main(args):
     pca = PCA()
     pca_transform = pca.fit_transform(mito_expression[:,idx]) 
 
-    # filter based on number of genes detected
-    num_genes_detected = np.sum( scRNA_dense_expression != 0, axis = 1)
-
-
+    ## DBSCAN on t-SNE coordiantes ##
+    tsne_coordinates = np.array(pd.read_csv("results/tSNE/filtered_tsne_coordinates.csv",header=None))
+    density_cluster = DBSCAN(eps = 2, min_samples = 50)
+    cluster_id = density_cluster.fit_predict(tsne_coordinates)
+    
+    
+    #plt.figure(num=None,figsize=(8,8))
+    #plt.scatter( tsne_coordinates[:,0], tsne_coordinates[:,1],s=2,c=cluster_id)
+    #plt.axis("square")
+    #plt.show()
 
     # Create dataframe 
     df = pd.DataFrame( np.concatenate( ( mito_expression,
@@ -85,7 +97,8 @@ def main(args):
     df.to_csv("results/qc_info.csv",index=False)
     
     # Remove cells with high mitochondrial expression or low number of detected genes
-    idx = np.logical_and(mean_expression < argp.mitochondrial_threshold , num_genes_detected > argp.num_genes)    
+    #idx = np.logical_and(mean_expression < argp.mitochondrial_threshold , num_genes_detected > argp.num_genes)    
+    idx = mean_expression < argp.mitochondrial_threshold
     
     filtered_expression = scRNA_dense_expression[idx,:]
     filtered_labels = cell_labels.loc[idx]
