@@ -21,10 +21,20 @@ def predict_cell_types(X, trained_classifier):
     """
     Description
     -----------   
+    Predict cell-types using trained classifier
     Parameters
     ----------    
+    X : numpy array
+        count data to use as input for prediction
+    trained_classifier : dict
+        output of train_LR fuction. Dictionary containing handles to functions 
+        used for classification
     Returns
     -------
+    predicted_cell_types : numpy array
+        predicted cell type label
+    prediction_probabilities : numpy array
+        probability each cell belongs to each class
     """
     # Unpack functions for prediction
     normalize = trained_classifier["normalization"]
@@ -32,7 +42,7 @@ def predict_cell_types(X, trained_classifier):
     pca_transform = trained_classifier["pca_function"]
     predict_function = trained_classifier["prediction_function"]
     predict_prob = trained_classifier["prediction_probability"]
-
+    # Apply functions
     predictors = pca_transform( select_features(normalize(X) ) )
     predicted_cell_types = predict_function( predictors )
     prediction_probabilities = predict_prob( predictors )
@@ -72,18 +82,17 @@ def main(args):
     """
     Description
     -----------   
-    Predict cell-types of each cell in the single cell expression data using
+    Predict cell-type of each cell in the single cell expression data using
     pre-defined marker genes
     
     Parameters
     ----------
-    scRNA_expression : sparse expression matrix in saved as npz file
-    genes in rows, single cells in columns.
-        
-    gene_markers : pandas dataframe
-    
+    see argparse_
     Returns
     -------
+    Saves two outputs
+        1) predicted_cell_types ( in results/classification/)
+        2) prediction_probabilities ( in results/classification/)
     """
     # Parse inputs
     parser = _argparse()
@@ -105,7 +114,7 @@ def main(args):
     predicted_cell_types, prediction_probabilities = predict_cell_types( scRNA_expression, classifier ) 
     
     sequencing_metrics = pd.read_csv("data/combined/processed_metrics.csv",index_col = 0)
-    
+    # Save outputs
     pd.DataFrame(prediction_probabilities, 
                  index = sequencing_metrics.index.values,
                  columns = np.unique(predicted_cell_types) ).to_csv("results/classification/prediction_probabilities.csv")

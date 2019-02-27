@@ -4,6 +4,11 @@ from scipy import sparse
 import pandas as pd
 from argparse import ArgumentParser, FileType
 
+#%% Normalize count matrix using arcsinh transformation. Assumes each row is a sample/cell and columns correspond to genes
+def normalize_arcsinh(count_matrix,cofactor = 1000):
+    total_counts = np.squeeze(np.sum(count_matrix,axis = 1))
+    normalized_counts = np.arcsinh(count_matrix / total_counts[:,np.newaxis] * cofactor)
+    return(normalized_counts)
 
 #%%    
 def product_mean(ligand_expression,receptor_expression):
@@ -40,17 +45,24 @@ def cell_cell_communication(scRNA_expression, gene_symbols, cell_type_labels, RL
     """
     Description
     -----------     
-    Calculate receptor-ligand interactions scores between all cell-types 
+    Calculate receptor-ligand interactions scores for each cell 
     Parameters
     ----------
-    
-
-    scRNA_expression :
-    gene_names :
-    cell_type_labels :
-    RL_list :
+    scRNA_expression : numpy array
+        count matrix containing expression values for each cell
+    gene_symbols : numpy array
+        array containing gene_symbols for corresponding columns of scRNA_expression
+    cell_type_labels : numpy array
+        array containing cell type corresponding to each row of scRNA_expression
+    RL_list : pandas dataframe
+        Dataframe containing receptor-ligand interactions
+    group : numpy array
+        array containing sample labels for each cell. Scores are calculated using
+        only cells from the same group
     Returns
     -------
+    interaction_score_list : list
+        list containing interaction scores for each group
     
     """ 
         
@@ -117,6 +129,20 @@ def get_cell_type_pairs( cell_type_labels ):
           
 #%% 
 def import_RL( filepath ):
+    """
+    Description
+    -----------
+    Import file containing known receptor-ligand interactions
+    Parameters
+    ----------       
+    filepath : string
+        path to file containing interactions
+    Returns
+    -------
+    RL_list : pandas dataframe
+    cell_type_pairs: array
+    array of cell-type pairs
+    """
     RL_list = pd.read_csv( filepath )
     RL_list.rename(columns={"Ligand_ApprovedSymbol":"Ligand_GeneSymbol",
                             "Receptor_ApprovedSymbol":"Receptor_GeneSymbol"},
@@ -127,10 +153,26 @@ def import_RL( filepath ):
 
 #%% Wrapper function to calculate scores
 def compute_scores( scRNA_expression, gene_symbols, cell_type_labels, RL_list ):
-        
-    #ligand_expression = cell_type_specific_expression(scRNA_expression, gene_symbols, RL_list.Ligand_GeneSymbol,cell_type_labels)
-    #receptor_expression = cell_type_specific_expression(scRNA_expression, gene_symbols,RL_list.Receptor_GeneSymbol,cell_type_labels)
+    """
+    Description
+    -----------     
+    Calculate receptor-ligand interactions scores for each cell 
+    Parameters
+    ----------
+    scRNA_expression : numpy array
+        count matrix containing expression values for each cell
+    gene_symbols : numpy array
+        array containing gene_symbols for corresponding columns of scRNA_expression
+    cell_type_labels : numpy array
+        array containing cell type corresponding to each row of scRNA_expression
+    RL_list : pandas dataframe
+        Dataframe containing receptor-ligand interactions
+    Returns
+    -------
+    interaction_scores : list
+        list containing interaction scores
     
+    """ 
     
     num_cells = scRNA_expression.shape[0]
     num_interactions = RL_list.shape[0]
@@ -142,10 +184,6 @@ def compute_scores( scRNA_expression, gene_symbols, cell_type_labels, RL_list ):
         receptor_expression[:,n] = np.squeeze(scRNA_expression[:, gene_symbols == RL_list.Receptor_GeneSymbol.values[n] ] )
     
     interaction_scores = receptor_expression* np.mean( ligand_expression, axis = 0)
-    #interaction_scores = pd.DataFrame(interaction_scores, index = cell_type_labels.index.values)
-    #interaction_scores.columns = RL_list.Ligand_GeneSymbol + "_" + RL_list.Receptor_GeneSymbol
-    #interaction_scores = score_function(ligand_expression,receptor_expression)
-    #null_scores = self.calculate_null_scores(RL_list,score_function,num_null_reps)
     return(interaction_scores)
 
 #%% Create list with cell-type specific expression for each gene in gene_symbols
@@ -166,6 +204,8 @@ def cell_type_specific_expression( scRNA_expression, gene_symbols, return_genes,
         cell-type labels for each row of scRNA_expression matrix
     Returns
     -------
+    ct_expression
+    list contained array of expression values for each cell-type 
     """   
     
     cell_types = np.unique( cell_type_labels )
@@ -181,7 +221,7 @@ def cell_type_specific_expression( scRNA_expression, gene_symbols, return_genes,
     ct_expression = [[] for n in range(num_cell_types)]
 
     for ct in range(num_cell_types):
-        ct_idx = cell_type_labels.values == cell_types[ct]
+        ct_idx = cell_type_labels == cell_types[ct]
         
         ct_expression[ct] = scRNA_expression[ np.squeeze(ct_idx), gene_idx.astype(int)] # cast to int for indexing
     return(ct_expression)
@@ -257,21 +297,17 @@ def main(args):
     argp = parser.parse_args(args[1:])
     # Read data
     scRNA_expression = np.array( sp.sparse.load_npz( argp.input_file ).todense() )
+    normalized_expression = normalize_arcsinh( scRNA_expression )
     gene_symbols = np.squeeze(np.array(pd.read_csv(argp.gene_names,header=None)))
     RL_list = import_RL( argp.RL_file )
-    cell_type_labels = pd.read_csv(argp.cell_type_labels,header=None)
-    #scRNA_expression = np.array(sp.sparse.load_npz( "data/combined/combined_sparse.npz" ).todense())
-    #gene_symbols = np.squeeze( np.array( pd.read_csv("data/combined/combined_gene_names.csv",header=None) ))
-    #RL_list = import_RL( "data/mouse_receptor_ligand.csv" )
-    #cell_type_labels = pd.read_csv("results/classification/predicted_cell_types.csv",header=None)
-    #group = pd.read_csv("data/combined/combined_labels.csv",index_col = 0,header=None)
+    cell_type_labels = pd.read_csv(argp.cell_type_labels,index_col = 0)
     
     if argp.group != None:
-        group = pd.read_csv( argp.group, index_col = 0, header = None )
+        group = pd.read_csv( argp.group, index_col = 0 )
     else:
         group = None
     
-    interaction_scores = cell_cell_communication(scRNA_expression, gene_symbols, cell_type_labels, RL_list, group )
+    interaction_scores = cell_cell_communication(normalized_expression, gene_symbols, cell_type_labels, RL_list, group )
     interaction_scores = pd.concat(interaction_scores)
     interaction_scores.to_csv(argp.output_file,sep= ",")
     

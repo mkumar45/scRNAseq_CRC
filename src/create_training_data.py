@@ -231,13 +231,11 @@ def main(args):
 
     # Gaussian Mixture models 
     idx = [ gene in marker_subset.columns.values for gene in gene_symbols ]
-    marker_expression = normalized_expression[:,idx]
-    
-    #fit_GMM(marker_expression, argp.num_components, argp.k_fold)
+    marker_expression = normalized_expression[:,idx]    
     GMMs, GMM_dict, BIC_dict = fit_GMM(marker_expression, 5, 5)
     training_data, training_labels, training_idx = create_training_data(scRNA_expression, gene_symbols, marker_subset, GMMs )
     
-    
+    # Save outputs    
     sp.sparse.save_npz("results/classification/sparse_training_counts.npz",
                        sp.sparse.coo_matrix( scRNA_expression[training_idx,:]) )
     pd.DataFrame( training_labels,
