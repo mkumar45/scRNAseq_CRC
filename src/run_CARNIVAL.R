@@ -4,29 +4,55 @@ library(tidyr)
 library(igraph)
 library(devtools)
 
-run_CARNIVAL = function( PKN_file, # file containing prior knowledge netwwork
-                         measurement_file, # file containing inferred TF activity to be included in network
-                         inputs_file, # file containing known perturbed nodes to be included in network 
-                         weights_file = NULL, # file containing PROGENy scores to weight signaling pathways for inclusing in network
-                         result_dir = "CARNIVAL/", # specify a name for result directory; if NULL, then date and time will be used by default
-                         parallelCR = F, # running parallelised version?
-                         inverseCR = T, # running inverse causal reasoning version (i.e. no inputs and starting from TFs)
-                         nodeID = "uniprot", # specify whether the nodes are in 'uniprot' or 'gene' ID format
-                         UP2GS = T, # convert UniProtIDs to Gene Symbols in the plotting step?
-                         DOTfig = T, #  write DOT figure? (can be visualised by e.g. GraphViz)
-                         Export_all = F, #  export all ILP variables or not; if F, only predicted node values and sif file will be written
-                         mipGAP = 0.05, # in proportion to the best estimated integer solution
-                         poolrelGAP = 0.0001, # in relative to the pool of best solution
-                         limitPop = 500, # limit the number of populated solutions after identified best solution
-                         poolCap = 100, # limit the pool size to store populated solution
-                         poolIntensity = 4, # (for populating) select search intensity [0 default/ 1 to 4]
-                         poolReplace = 2, # select replacement strategy of the pool solution [0 default/ 1 to 2]
-                         alphaWeight = 1, # constant coefficient for fitting error in the objective function in case TF activities are not assigned [default 1]
-                         betaWeight = 0.2, # relative coefficient of model size to fitting error in the objective function [default 0.2]
-                         timelimit = 300 # set time limit for cplex optimisation (in seconds)
+
+run_CARNIVAL = function( PKN_file, 
+                         measurement_file, 
+                         inputs_file,  
+                         weights_file = NULL,  
+                         result_dir = "CARNIVAL/", 
+                         parallelCR = F,
+                         inverseCR = T,
+                         nodeID = "uniprot", 
+                         UP2GS = T,
+                         DOTfig = T,
+                         Export_all = F,
+                         mipGAP = 0.05,
+                         poolrelGAP = 0.0001, 
+                         limitPop = 500, 
+                         poolCap = 100,
+                         poolIntensity = 4,
+                         poolReplace = 2,
+                         alphaWeight = 1, 
+                         betaWeight = 0.2, 
+                         timelimit = 300
                         ) 
 {
-    
+  #' Run CARNIVAL PPI network inference
+  #'
+  #' Infer signed and directed protein-protein interaction netwowrk consistent with experimental measurements or inferred protein activity 
+  #'
+  #' @param PKN_file file containing prior knowledge netwwork
+  #' @param measurement_file file containing inferred TF activity to be included in network
+  #' @param inputs_file file containing known perturbed nodes (UNIPROT IDs) to be included in network
+  #' @param weights_file file containing PROGENy scores to weight signaling pathways for inclusing in network
+  #' @param result_dir specify a name for result directory; if NULL, then date and time will be used by default
+  #' @param parallelCR flag specifying whether to run parallelised version
+  #' @param inverseCR flag specifying whether to run inverse causal reasoning version (i.e. no inputs and starting from TFs)
+  #' @param nodeID flag specifying whether the nodes are in 'uniprot' or 'gene' ID format
+  #' @param UP2GS flag specifying whether to convert UniProtIDs to Gene Symbols in the plotting step
+  #' @param DOTfig flag specifying whether to write DOT figure (can be visualised by e.g. GraphViz)
+  #' @param Export_all flag specifying whether to export all ILP variables or not; if F, only predicted node values and sif file will be written
+  #' @param mipGAP CPLEX parameter specifying proportion to the best estimated integer solution
+  #' @param poolrelGAP CPLEX parameter specifying in relative to the pool of best solution
+  #' @param limitPop limit the number of populated solutions after identified best solution
+  #' @param poolCap limit the pool size to store populated solution
+  #' @param poolIntensity (for populating) select search intensity (0 default/ 1 to 4)
+  #' @param poolReplace select replacement strategy of the pool solution (0 default/ 1 to 2)
+  #' @param alphaWeight constant coefficient for fitting error in the objective function in case TF activities are not assigned (default 1)
+  #' @param betaWeight relative coefficient of model size to fitting error in the objective function (default 0.2)
+  #' @param timelimit set time limit for cplex optimisation (in seconds)
+  #' @return Save output files in results directory 
+  #' @export 
   load_all("CARNIVAL-master/") # load CARNIVAL package
   load(file = system.file("inst/progenyMembers.RData",package="CARNIVAL"))
   

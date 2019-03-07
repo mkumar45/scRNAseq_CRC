@@ -1,11 +1,19 @@
-format_cytoscape = function(  results_dir,  
-                         homolog_file = "data/HOM_MouseHumanSequence.rpt", # file for converting between human and mouse homologs
-                         RL_interaction_file = "data/mouse_receptor_ligand.csv", # file containing receptor/ligand interactions
-                         TF_regulon_file = "data/TFregulons/Robjects_VIPERformat/mouse_dorothea2_regulon_v1.rds", # TF regulon file
-                         weights_file = NULL, # file containing PROGENy scores to weight signaling pathways for inclusing in network
-                         result_dir = "CARNIVAL/" # specify a name for result directory; if NULL, then date and time will be used by default
+format_cytoscape = function(  results_dir = "CARNIVAL/",  
+                         homolog_file = "data/HOM_MouseHumanSequence.rpt", 
+                         RL_interaction_file = "data/mouse_receptor_ligand.csv",
+                         TF_regulon_file = "data/TFregulons/Robjects_VIPERformat/mouse_dorothea2_regulon_v1.rds"
                       ) 
 {
+  #' Format CARNIVAL outputs for visualing in cytoscae
+  #'
+  #' Create edge list and node list that can be imported directly into cytoscape
+  #'
+  #' @param results_dir path to directory containing CARNIVAL output results
+  #' @param homolog_file path to file containing homolog information from mouse gene informatics (character)
+  #' @param RL_interaction_file path to file containing receptor/ligand interactions for annotating nodes (character)
+  #' @param TF_regulon_file path to file containing DoRothEA transcription factor regulons to use for VIPER inference for annotating nodes
+  #' @return Writes two .csv files cotaining edge list and node list 
+  #' @export 
   weighted_network = read.table(paste0(results_dir,"weightedModel_1.txt"),header=TRUE,stringsAsFactors = FALSE)
   node_attributes = read.table(paste0(results_dir,"nodesAttributes_1.txt"),header=TRUE,fill=TRUE,stringsAsFactors = FALSE)
   

@@ -1,8 +1,15 @@
-map_UNIPROT = function( input_SYMBOLS, # list of mouse gene symbols to convert to mouse UNIPROT ID, human gene symbols, and human UNIPROT
-                        homolog_file = "data/HOM_MouseHumanSequence.rpt" # file for converting between human and mouse homologs
+map_UNIPROT = function( input_SYMBOLS, 
+                        homolog_file = "data/HOM_MouseHumanSequence.rpt"
                       )
 {
-  
+  #' Map list of mouse gene symbols to mouse UNIPROT ID, human gene symbols, and human UNIPROT IDs
+  #'
+  #' CARNIVAL prior knowldegde network (PKN) uses UNIPROT IDs so gene symbols need to be mapped before running carnvial for consistency
+  #'
+  #' @param input_SYMBOLS mouse gene symbols to convert (list)
+  #' @param homolog_file Path to file containing homolog information from mouse gene informatics (character)
+  #' @return A data frame containing mouse and human gene symbols and UNIPROT IDs for every mouse symbol found in MGI database
+  #' @export 
   homolog_table = read.table(homolog_file,sep="\t",header=TRUE)
   human_SYMBOLS = list()
   human_UNIPROT = list()
@@ -22,7 +29,7 @@ map_UNIPROT = function( input_SYMBOLS, # list of mouse gene symbols to convert t
     mouse_UNIPROT = append(mouse_UNIPROT,mouse_prot)
 
     
-    homolog_id = homolog_table[idx,]$HomoloGene.ID # Get homolog ID correspond to mouse gene
+    homolog_id = homolog_ta?map_ble[idx,]$HomoloGene.ID # Get homolog ID correspond to mouse gene
     
     df = subset(homolog_table, HomoloGene.ID == homolog_id & Common.Organism.Name == "human"  ) # Find human genes with same homolog ID
     

@@ -5,7 +5,14 @@ source("Z:/users/mkumar/scRNAseq_CRC/src/plotting/plotting_functions.R")
 
 write_PKN = function(PKN_file,output_file)
 {
-  # Import and format prior knowledge network (PKN)
+  #' Import and format prior knowledge network (PKN)
+  #'
+  #' Filter PKN to contain only signed and directed network in format required for CARNIVAL
+  #'
+  #' @param PKN_file path to file containing prior knowledge network
+  #' @param output_file file name for writing results
+  #' @return Writes a .csv file cotaining formated PKN for CARNIVAL
+  #' @export 
   omnipath_network = read.table( file = PKN_file,sep = '\t', header = TRUE)
   directed_network = subset(omnipath_network, is_directed == 1 & (is_stimulation == 1 | is_inhibition == 1))
   directed_network$sign[directed_network$is_stimulation == 1] = 1
@@ -26,10 +33,23 @@ format_CARNIVAL = function( data_directory = "data/CARNIVAL/",
                             PROGENy_path = "results/PROGENy/PROGENy_scores.csv",
                             TF_path ="results/Dorothea/TF_activities_confidence_AB.csv",
                             sample_file = "results/classification/processed/sample_labels.csv",
-                            predicted_cell_types = "results/classification/processed/predicted_cell_types.csv",
-                            gene_symbol_path = "data/mouse_gene_symbols.csv"
+                            predicted_cell_types = "results/classification/processed/predicted_cell_types.csv"
                           )
 {
+  #' Create and format input files for CARNIVAL
+  #'
+  #' Format TF inferred activities as measurement file for CARNIVAL and
+  #' format receptor ligand interactions as input file for CARNVIAL
+  #'
+  #' @param data_directory path to directory to write formatted CARNIVAL inputs
+  #' @param PKN_file path to file containing prior knowledge network
+  #' @param homolog_file path to file containing homolog information from mouse gene informatics (character)
+  #' @param PROGENy_path path to file containing PROGENy pathway inferred activity
+  #' @TF_path path to file containing DoRothEA inferred TF activity
+  #' @param sample_file path to file containing sample/cell meta data. For subsetting. 
+  #' @param predicted_cell_type path to file containing predicted cell type labels. For subsetting
+  #' @return Saves input files for running CARNIVAL in "data_directory"
+  #' @export 
   dir.create(data_directory)
   
   write_PKN(PKN_file, paste0( data_directory, "PKN.csv" ) )
@@ -41,7 +61,6 @@ format_CARNIVAL = function( data_directory = "data/CARNIVAL/",
   num_pathways = dim(PROGENy_scores)[2] 
   num_TF = dim(TF_activities)[2]
   
-  gene_symbols = read.csv(gene_symbol_path,header=FALSE)
   sample_labels = read.csv(sample_file, row.names = 1, header=TRUE)
   colnames(sample_labels) = "label"
   cell_type_labels = read.csv(predicted_cell_types,row.names = 1,header=TRUE)
@@ -124,9 +143,7 @@ format_CARNIVAL = function( data_directory = "data/CARNIVAL/",
   CAF_PROGENy = subset( PROGENy_scores, cell_type == "CAF" & sample_type == "AOM"  & tissue == "tumor")
   numeric = unlist(lapply(CAF_PROGENy,is.numeric))
   average_CAF_PROGENy = colMeans(CAF_PROGENy[,numeric])
-
-
-   =  #colMeans(AOM_PROGENy_scores) - colMeans(APC_PROGENy_scores)
+   #colMeans(AOM_PROGENy_scores) - colMeans(APC_PROGENy_scores)
   edgeWeights = data.frame( tumor_PROGENy_diff$SNR  )
   rownames(edgeWeights) = tumor_PROGENy_diff$name
   edgeWeights = t(edgeWeights)

@@ -92,4 +92,6 @@ results/classification/processed/processed_counts.RDS : results/classification/p
 	$(PYTHON) src/convert_sparse.py $< results/classification/processed/processed_counts.csv
 	Rscript src/make_sparse_RDS.R results/classification/processed/processed_counts.csv $@
 
-
+%.RDS : %.npz src/convert_sparse.py src/make_sparse_RDS.R  
+	$(PYTHON) src/convert_sparse.py $< $*.csv
+	Rscript src/make_sparse_RDS.R $*.csv $@
