@@ -100,14 +100,15 @@ def main(args):
     # Read training data
     sparse_training = sp.sparse.load_npz( argp.training_data )
     training_data = np.array( sparse_training.todense() )
-    training_labels = np.array(pd.read_csv("results/classification/training_labels.csv",index_col = 0 ))
+    training_labels = np.array(pd.read_csv(argp.training_labels,index_col = 0 ))
 
     # Train classifier        
     classifier = train_classifier.train_LR( training_data, training_labels, num_genes = argp.num_genes, pct_var = argp.pca_variance/100, save_results = False  )
 
     training_predictions, training_probabilities = predict_cell_types( training_data, classifier )
     confusion_mat = pd.DataFrame(confusion_matrix( training_labels, training_predictions ),
-                             index = np.unique(training_labels), columns = np.unique(training_labels))
+                             index = np.unique(training_labels), columns = np.unique(training_labels)).to_csv(
+                                     "results/classification/confusion_matrix.csv")
     # Make predictions for all cells
     sparse_scRNA_expression = sp.sparse.load_npz( argp.test_data )
     scRNA_expression = np.array( sparse_scRNA_expression.todense() )
