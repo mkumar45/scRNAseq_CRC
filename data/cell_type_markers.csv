@@ -1,0 +1,15 @@
+cell_type,Epcam,Krt5,Krt14,Krt6a,Cd79a,Cd19,Tnc,Pdgfra,Col5a1,Pecam1,Cdh5,Chgb,Scg5,Scgn,Phgr1,Maoa,Ezr,Krt20,Sval1,Spink4,Agr2,Muc2,Cck,Gfra3,Aplp1,Hba-a2,Hbb-bs,Hba-a1,Lyz2,Csf1r,Cd14,S100a9,S100a8,Vim,Acta2,Des,Pdgfrb,Dpep1,Mmp7,Reg4,Jchain,Igha,Igkc,Slc12a2,Irf2bp2,Cd81,Cd3d,Cd3e,Cd3g,Sox4,Hes1,Tcf4
+Bcell,,,,,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+CAF,,,,,,,AND,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Endothelial,,,,,,,,,,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Enteroendocrine,AND,,,,,,,,,,,AND,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Colonocyte,AND,,,,,,,,,,,,,,AND,AND,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Erythroid,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,
+Goblet,AND,,,,,,,,,,,,,,,,,,AND,AND,AND,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Macrophage,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,,,,,,,,,,,,,,,,,,,,,,
+Monocyte,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,AND,,,,,,,,,,,,,,,,,,,
+Myofibroblast,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,AND,AND,,,,,,,,,,,,,,,
+Paneth,AND,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,,,,,,,,,,,,
+Stem,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,AND,,,,,,
+Tcell,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,OR,OR,OR,,,
+Tumor,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AND,AND,AND
