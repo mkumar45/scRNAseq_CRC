@@ -1,0 +1,97 @@
+---
+title: "PROGENY/DoRothEA plots"
+output: html_notebook
+---
+```{r}
+library("ggplot2")
+source("plotting_functions.R")
+```
+```{r}
+# Import data
+root = "../../"
+PROGENy_scores = read.csv(paste0(root,"results/PROGENy/PROGENy_scores.csv"), row.names = 1)
+TF_activities = read.csv(paste0(root,"results/Dorothea/TF_activities_confidence_A.csv"),row.names=1)
+num_pathways = dim(PROGENy_scores)[2] 
+num_TF = dim(TF_activities)[2]
+
+gene_symbols = read.csv(paste0(root,"data/mouse_gene_symbols.csv"),header=FALSE)
+sample_labels = read.csv(paste0(root,"results/classification/processed/sample_labels.csv"), row.names = 1, header=TRUE)
+cell_type_labels = read.csv(paste0(root,"/results/classification/processed/predicted_cell_types.csv"),row.names = 1,header=TRUE)
+
+#count_matrix = data.frame(as.matrix(readRDS("../results/classification/processed/processed_counts.RDS") ) )
+```
+```{r}
+split_sample = strsplit(gsub("S4","S2",as.character(sample_labels$X0)),"_")
+
+PROGENy_scores$sample_type =sapply(split_sample,`[`,1)
+PROGENy_scores$tissue =sapply(split_sample,`[`,2)
+PROGENy_scores$replicate_number = sapply(split_sample,`[`,3)
+PROGENy_scores$cell_type = cell_type_labels$predicted_cell_type
+
+TF_activities$sample_type =sapply(split_sample,`[`,1)
+TF_activities$tissue =sapply(split_sample,`[`,2)
+TF_activities$replicate_number = sapply(split_sample,`[`,3)
+TF_activities$cell_type = cell_type_labels$predicted_cell_type
+```
+
+```{r}
+tumor_PROGENy = subset( PROGENy_scores, (cell_type == "Tumor" & sample_type != "WT"  & tissue == "tumor") | 
+                                        (cell_type %in% c("Enterocyte","Goblet","Stem") & sample_type == "WT"  & tissue == "normal") )
+AOM_tumor_PROGENy = subset( PROGENy_scores, cell_type == "Tumor" & sample_type == "AOM"  & tissue == "tumor")
+APC_tumor_PROGENy = subset( PROGENy_scores, cell_type == "Tumor" & sample_type == "APC"  & tissue == "tumor")
+tumor_PROGENy_diff = interaction_test(AOM_tumor_PROGENy, APC_tumor_PROGENy)
+tumor_PROGENy_diff$FDR = p.adjust(tumor_PROGENy_diff$p_value, method = "BH")
+
+#Plots
+volacano_plot( tumor_PROGENy_diff, metric = "SNR", FC = 0.2, q_val = .1 )
+pdf(paste0(root,"figures/PROGENy/tumor_PROGENy_scores.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+
+tumor_PROGENy[,1:num_pathways] = scale(tumor_PROGENy[,1:num_pathways])
+plot_multi_gene_expression( tumor_PROGENy, colnames(PROGENy_scores[,1:num_pathways]), jitter = 0 )
+dev.off()
+
+# Fibroblasts
+CAF_PROGENy = subset( PROGENy_scores, cell_type == "CAF" & sample_type != "WT"  & tissue == "tumor")
+AOM_CAF_PROGENy = subset( PROGENy_scores, cell_type == "CAF" & sample_type == "AOM"  & tissue == "tumor")
+APC_CAF_PROGENy = subset( PROGENy_scores, cell_type == "CAF" & sample_type == "APC"  & tissue == "tumor")
+CAF_PROGENy_diff = interaction_test(AOM_CAF_PROGENy, APC_CAF_PROGENy)
+CAF_PROGENy_diff$FDR = p.adjust(CAF_PROGENy_diff$p_value, method = "BH")
+
+#Plots
+volacano_plot( CAF_PROGENy_diff, metric = "SNR", FC = 0.25, q_val = .1 )
+plot_multi_gene_expression( CAF_PROGENy, colnames(PROGENy_scores[,1:num_pathways]) )
+```
+```{r}
+AOM_tumor_TF = subset( TF_activities, cell_type == "Tumor" & sample_type == "AOM"  & tissue == "tumor")
+APC_tumor_TF = subset( TF_activities, cell_type == "Tumor" & sample_type == "APC"  & tissue == "tumor")
+tumor_TF = interaction_test(AOM_tumor_TF, APC_tumor_TF)
+tumor_TF$FDR = p.adjust(tumor_TF$p_value, method = "BH")  
+pdf(paste0(root,"figures/Dorothea/tumor_TF_volcano.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+volacano_plot( tumor_TF, metric = "SNR", FC = 1.5, q_val = 1 *10 ^-200, add_text = FALSE )
+dev.off()
+
+CAF_TF_activities = subset( TF_activities, cell_type == "CAF" & sample_type != "WT"  & tissue == "tumor")
+AOM_CAF_TF = subset( TF_activities, cell_type == "CAF" & sample_type == "AOM"  & tissue == "tumor")
+APC_CAF_TF = subset( TF_activities, cell_type == "CAF" & sample_type == "APC"  & tissue == "tumor")
+CAF_TF = interaction_test(AOM_CAF_TF, APC_CAF_TF)
+CAF_TF$FDR = p.adjust(CAF_TF$p_value, method = "BH")  
+volacano_plot(CAF_TF, metric = "SNR", FC = 1.5, q_val = 0.05, add_text = FALSE)
+```
+Plot activites of signficantly different transcription factors in tumor cells
+```{r}
+#tumor_TF_activities = subset( TF_activities, (cell_type == "Tumor" & sample_type != "WT"  & tissue == "tumor")  )
+
+tumor_TF_activities = subset( TF_activities, (cell_type == "Tumor" & sample_type != "WT"  & tissue == "tumor") | 
+                                             (cell_type %in% c("Enterocyte","Goblet","Stem") & sample_type == "WT"  & tissue == "normal") )
+
+diff_TFs = as.character(subset(tumor_TF,-log10(p_value) > 200 & abs(SNR) > 1.5)$name)
+tumor_TF_activities_subset =zvvv tumor_TF_activities[,c(diff_TFs,"cell_type","sample_type","tissue")]
+pdf(paste0(root,"figures/Dorothea/tumor_TF_activities.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+plot_multi_gene_expression( tumor_TF_activities_subset, diff_TFs )
+dev.off()
+
+CAF_TF_activities = subset( TF_activities, cell_type == "CAF" & sample_type != "WT"  & tissue == "tumor")
+diff_TFs = as.character(subset(CAF_TF,-log10(p_value) > 2 & abs(SNR) > 0.3)$name)
+CAF_TF_activities_subset = CAF_TF_activities[,c(diff_TFs,"cell_type","sample_type","tissue")]
+#plot_multi_gene_expression( CAF_TF_activities_subset, diff_TFs )
+```

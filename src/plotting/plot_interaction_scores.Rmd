@@ -1,0 +1,203 @@
+---
+title: "Interaction score plots"
+output: html_notebook
+---
+```{r}
+library("ggplot2")
+library("ggpubr")
+source("plotting_functions.R")
+```
+```{r}
+# Import data
+root = "../../" # path to root directory. Paths are specficed relative to root
+interaction_scores = read.csv(paste0(root,"results/communication/interaction_scores.csv"))
+interaction_scores = interaction_scores[,-1] # first column is indices
+num_interactions = dim(interaction_scores)[2] # keep track of num of interactions for subsequent plotting 
+sample_labels = read.csv(paste0(root,"results/classification/processed/sample_labels.csv"), row.names = 1, header=TRUE)
+cell_type_labels = read.csv(paste0(root,"results/classification/processed/predicted_cell_types.csv"),row.names = 1,header=TRUE)
+count_matrix = readRDS(paste0(root,"results/classification/processed/processed_counts.RDS"))  
+normalized_counts = data.frame(as.matrix(normalize_counts(count_matrix)) )
+gene_symbols = read.csv(paste0(root,"data/mouse_gene_symbols.csv"),header=FALSE)
+```
+
+
+```{r}
+# Add meta data to dataframes for plotting with ggplot
+split_sample = strsplit(gsub("S4","S2",as.character(sample_labels$X0)),"_")
+
+normalized_counts$sample_type =sapply(split_sample,`[`,1)
+normalized_counts$tissue =sapply(split_sample,`[`,2)
+normalized_counts$replicate_number = sapply(split_sample,`[`,3)
+normalized_counts$cell_type = cell_type_labels$predicted_cell_type
+
+interaction_scores$sample_type =sapply(split_sample,`[`,1)
+interaction_scores$tissue =sapply(split_sample,`[`,2)
+interaction_scores$replicate_number = sapply(split_sample,`[`,3)
+interaction_scores$cell_type = cell_type_labels$predicted_cell_type
+
+cell_types = levels(unique(interaction_scores$cell_type))
+num_cell_types = length(cell_types)
+num_genes = length(gene_symbols$V1)
+```
+
+```{r}
+apc_scores = subset(interaction_scores, cell_type == "Tumor" & sample_type == "APC"  & tissue == "tumor")
+aom_scores = subset(interaction_scores, cell_type == "Tumor" & sample_type == "AOM"  & tissue == "tumor")
+tumor_comparison = interaction_test(aom_scores,apc_scores, output_file = paste0(root,"results/communication/tumor_diff_interactions.csv"))
+tumor_comparison$FDR = p.adjust(tumor_comparison$p_value, method = "BH")
+pdf(paste0(root,"figures/communication/interaction_volcano.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+volacano_plot(tumor_comparison, FC = 3, q_val = .001, ymin = 0, ymax = 60, add_text = FALSE)
+dev.off()
+```
+
+```{r}
+tumor_diff = subset(tumor_comparison, abs(log2(fold_change)) > 2 & p_value < 0.001 ) # look only at interactions different between tumor cells 
+# Get Ligand and receptor symbols from interaction anmes
+RL_names = strsplit( as.character(tumor_diff$name),"_")
+ligand_symbols = unique(sapply(RL_names,`[`,1))
+receptor_symbols = unique(sapply(RL_names,`[`,2))
+
+entropy = function(x) 
+{
+  y = x[ which(x!=0)] / sum(x)
+  return(-sum( y*log(y))) 
+}
+
+aom_tumor_cells = subset(normalized_counts, sample_type == "AOM" & tissue == "tumor")
+cell_type_ligand_expression = aggregate( aom_tumor_cells[,ligand_symbols],
+                                         list(aom_tumor_cells$cell_type),mean)
+
+# Find ligand expressed predominantly by CAFs
+expression_entropy = apply( cell_type_ligand_expression[,-1], MARGIN = 2, FUN = entropy)
+ligand_idx = expression_entropy < 1.75 & apply(as.matrix(cell_type_ligand_expression[,-1]), MARGIN = 2, FUN = which.max) == 2
+CAF_ligands = ligand_symbols[ligand_idx]
+cognate_receptors = unique(sapply(RL_names,`[`,2)[ sapply(RL_names,`[`,1) %in% ligand_symbols[ligand_idx]])
+# Find signficantly different ligand/receptor expression
+AOM_ligand = subset( normalized_counts[,c(ligand_symbols[ligand_idx], "cell_type","sample_type","tissue")], cell_type == "CAF" & sample_type == "AOM"  & tissue == "tumor")
+APC_ligand = subset( normalized_counts[,c(ligand_symbols[ligand_idx], "cell_type","sample_type","tissue")], cell_type == "CAF" & sample_type == "APC"  & tissue == "tumor")
+ligand_df = interaction_test(AOM_ligand,APC_ligand, output_file = paste0(root,"results/communication/ligand_diff_interactions.csv"))
+ligand_df$FDR = p.adjust(ligand_df$p_value, method = "BH")
+pdf(paste0(root,"figures/communication/CAF_ligand_volcanco.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+volacano_plot(ligand_df, FC = 1.5, q_val = 0.25 )
+dev.off()
+
+AOM_receptor = subset( normalized_counts[,c(cognate_receptors, "cell_type","sample_type","tissue")], cell_type == "Tumor" & sample_type == "AOM"  & tissue == "tumor")
+APC_receptor = subset( normalized_counts[,c(cognate_receptors, "cell_type","sample_type","tissue")], cell_type == "Tumor" & sample_type == "APC"  & tissue == "tumor")
+receptor_df = interaction_test(AOM_receptor,APC_receptor, output_file = paste0(root,"results/communication/receptor_diff_interactions.csv"))
+
+receptor_df$FDR = p.adjust(receptor_df$p_value, method = "BH")
+pdf(paste0(root,"figures/communication/tumor_receptor_volcano.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+volacano_plot(receptor_df, FC = 1.5, q_val = 0.25)
+dev.off()
+
+
+CAF_counts = subset( normalized_counts, cell_type == "CAF" & sample_type != "WT"  & tissue == "tumor")
+pdf(paste0(root,"figures/communication/CAF_ligand_expression.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+plot_multi_gene_expression( CAF_counts, CAF_ligands )
+dev.off()
+
+tumor_counts = subset( normalized_counts, cell_type == "Tumor" & sample_type != "WT"  & tissue == "tumor")
+pdf(paste0(root,"figures/communication/tumor_receptor_expression.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+plot_multi_gene_expression( tumor_counts, cognate_receptors )
+dev.off()
+```
+
+```{r}
+# Plot interaction scores
+tumor_scores = rbind(apc_scores,aom_scores)
+
+pdf(paste0(root,"figures/communication/example_interactions.pdf"),width=11,height=3.5,paper='special',useDingbats = FALSE) # open pdf 
+plot_multi_gene_expression( tumor_scores, c("Bmp4_Bmpr2","Wnt5a_Fzd5","Mdk_Sdc4","Tnfsf12_Tnfrsf12a"),jitter = 0 ) + stat_compare_means()
+dev.off()
+
+plot_multi_gene_expression( tumor_scores, "Wnt5a_Fzd5",jitter = 0 ) + stat_compare_means()
+plot_multi_gene_expression( tumor_scores, "Mdk_Sdc4",jitter = 0 ) + stat_compare_means()
+plot_multi_gene_expression( tumor_scores, "Tnfsf12_Tnfrsf12a",jitter = 0 ) + stat_compare_means()
+plot_multi_gene_expression( tumor_scores, "Col1a1_Itgb1",jitter = 0 ) + stat_compare_means()
+
+
+```
+
+```{r}
+# Expression of ligand by CAFS
+plot_expression( subset(normalized_counts, (cell_type == "CAF" & sample_type == "APC" & tissue == "tumor") | (cell_type == "CAF" & sample_type == "AOM" & tissue == "tumor")),
+                 gene_symbol = "Fgf7" )
+
+plot_expression( subset(normalized_counts, (cell_type == "CAF" & sample_type == "APC" & tissue == "tumor") | (cell_type == "CAF" & sample_type == "AOM" & tissue == "tumor")),
+                 gene_symbol = "Wnt5a" )
+
+# Expression of receptors by tumors
+plot_expression( subset(normalized_counts, (cell_type == "Tumor" & sample_type == "APC" & tissue == "tumor") | (cell_type == "Tumor" & sample_type == "AOM" & tissue == "tumor")),
+                 gene_symbol = "Fgfr2" )
+plot_expression( subset(normalized_counts, (cell_type == "Tumor" & sample_type == "APC" & tissue == "tumor") | (cell_type == "Tumor" & sample_type == "AOM" & tissue == "tumor")),
+                 gene_symbol = "Fzd5" )
+
+```
+```{r}
+
+c("Myoc_Fzd10",
+"Bmp4_Bmpr2",
+"Vip_Vipr1",
+"Thbs2_Itga6",
+"Thbs2_Itgb1",
+"Lama1_Itgb1",
+"Ctgf_Lrp6",
+"Col5a2_Ddr1",
+"Lama1_Tmprss6",
+"Tnfsf12_Tnfrsf12a",
+"Fgf2_Fgfr4",
+"Lamb1_Itgb1",
+"Fbn1_Itgb1",
+"Thbs2_Itga4",
+"Efna5_Epha4",
+"Vcan_Cd44",
+"Vcan_Itgb1",
+"Trh_Trhr",
+"Cthrc1_Fzd6",
+"Lamb1_Itga6",
+"Timp1_Cd63",
+"Proc_Thbd",
+"Clcf1_Crlf1",
+"Icam5_Itgb2",
+"Vcan_Itga4",
+"Col1a1_Ddr1",
+"Col3a1_Ddr1",
+"Cthrc1_Fzd5",
+"Efna5_Epha2",
+"Shbg_Cd177",
+"Edn3_Kel",
+"Edn1_Kel",
+"Fn1_Tmprss6",
+"Il11_Il6st",
+"Pon2_Htr2a",
+"Wnt5a_Lrp5",
+"Mdk_Sdc1",
+"Col1a1_Itgb1",
+"Col1a1_Cd44",
+"Wnt5a_Fzd6",
+"Col1a2_Cd44",
+"Fgf7_Fgfr2",
+"Dcn_Met",
+"Nps_Npsr1",
+"Mfap5_Notch1",
+"Wnt5a_Fzd5",
+"Edn2_Kel",
+"Wnt5a_Ryk",
+"Tnc_Itgb1",
+"Mdk_Ptprz1",
+"Mfap2_Notch1",
+"Wnt5a_Fzd7",
+"Igf1_Igf1r",
+"Mdk_Sdc4",
+"Muc2_Agr2",
+"Fgf7_Fgfr4",
+"Sfrp1_Fzd6",
+"Ghrl_Gpr39",
+"Sst_Sstr3",
+"Fgf22_Fgfr2",
+"Ghrl_Ghrhr",
+"Insl3_Rxfp2",
+"Scgb1a1_Lmbr1l",
+"Scgb1a1_Lrp2",
+"Scgb3a1_Marco")
+```
