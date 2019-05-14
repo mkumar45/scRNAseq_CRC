@@ -27,7 +27,7 @@ variables:
 #quality_control : $(QC_FILES)
 
 .PHONY : all
-all : sparse_samples classification processed_predictions
+all : sparse_samples classification processed_predictions interactions pathway_scores TF_activities
 
 .PHONY : sparse_samples
 sparse_samples : $(SPARSE_FILES)
@@ -67,7 +67,8 @@ results/classification/processed/processed_counts.npz : src/process_predictions.
 	mkdir -p results/classification/processed/
 	$(PYTHON) src/process_predictions.py
 	
-#
+.PHONY : interactions
+interactions : results/communication/interaction_scores.csv
 # Interaction scores
 results/communication/interaction_scores.csv : src/cell_cell_communication.py results/classification/processed/processed_counts.npz
 #data/combined/combined_sparse.npz data/combined/combined_gene_names.csv results/classification/predicted_cell_types.csv data/mouse_receptor_ligand.csv  data/combined/combined_labels.csv
@@ -76,12 +77,16 @@ results/communication/interaction_scores.csv : src/cell_cell_communication.py re
 
 #
 # Pathway scores
+.PHONY : pathway_scores
+pathway_scores : results/PROGENy/PROGENy_scores.csv
 results/PROGENy/PROGENy_scores.csv : src/compute_PROGENy_scores.py results/classification/processed/processed_counts.npz data/mouse_gene_symbols.csv results/classification/processed/predicted_cell_types.csv data/PROGENy_mouse_model_v2.csv
 	mkdir -p results/PROGENy/
 	$(PYTHON) $< results/classification/processed/processed_counts.npz data/mouse_gene_symbols.csv results/classification/processed/predicted_cell_types.csv data/PROGENy_mouse_model_v2.csv $@
-  
 # TF scores
+.PHONY : TF_activities
+TF_activities : results/Dorothea/TF_activities.csv
 results/Dorothea/TF_activities.csv : src/run_Dorothea.R results/classification/processed/processed_counts.RDS data/TFregulons/Robjects_VIPERformat/mouse_dorothea2_regulon_v1.rds data/mouse_gene_symbols.csv
+	mkdir -p results/Dorothea/
 	Rscript src/run_Dorothea.R results/classification/processed/processed_counts.RDS data/TFregulons/Robjects_VIPERformat/mouse_dorothea2_regulon_v1.rds data/mouse_gene_symbols.csv
 
 #
@@ -89,17 +94,28 @@ results/Dorothea/TF_activities.csv : src/run_Dorothea.R results/classification/p
 results/CARNIVAL :
 	mkdir results/CARNIVAL/
 	Rscript src/format_CARNIVAL.R
-	Rscript src/run_CARNIVAL.R
-	Rscript src/map_UNIPROT.R
+	Rscript src/run_CARNIVAL.R data/CARNIVAL/PKN.csv data/CARNIVAL/tumor_TF.csv data/CARNIVAL/tumor_input_receptors.csv
+	Rscript src/format_cytoscape CARNIVAL/ data/HOM_MouseHumanSequence.rpt data/mouse_receptor_ligand.csv data/TFregulons/Robjects_VIPERformat/mouse_dorothea2_regulon_v1.rds
 	
 # figures
 figures/tsne_cell_type.pdf figures/tsne_sample.pdf : src/plotting/tsne_plots.py results/tSNE/combined_sparse_tsne.csv
 	$(PYTHON) $< results/tSNE/combined_sparse_tsne.csv
 	
-results/classification/processed/processed_counts.RDS : results/classification/processed/processed_counts.npz src/convert_sparse.py src/make_sparse_RDS.R  
-	$(PYTHON) src/convert_sparse.py $< results/classification/processed/processed_counts.csv
-	Rscript src/make_sparse_RDS.R results/classification/processed/processed_counts.csv $@
 
-%.RDS : %.npz src/convert_sparse.py src/make_sparse_RDS.R  data/mouse_gene_symbols.csv
-	$(PYTHON) src/convert_sparse.py $< $*.csv
+
+%.RDS : %.csv src/make_sparse_RDS.R  data/mouse_gene_symbols.csv
 	Rscript src/make_sparse_RDS.R $*.csv data/mouse_gene_symbols.csv $@
+	
+%.csv : %.npz src/convert_sparse.py
+	$(PYTHON) src/convert_sparse.py $< $*.csv
+
+	
+.PHONY : figures
+figures : FORCE
+	$(PYTHON) src/plotting/plot_qc.py
+	$(PYTHON) src/plotting/plot_expression_programs.py
+	$(PYTHON) src/plotting/plot_GO_terms.py
+	$(PYTHON) src/plotting/plot_ligand_expression_heatmap.py
+FORCE: 
+
+	
